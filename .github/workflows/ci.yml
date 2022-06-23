@@ -27,8 +27,8 @@ jobs:
         dotnet-version: 6.0.x
 
     - name: Restore
-      # can't use locked mode due to https://github.com/NuGet/Home/issues/9195
-      run: dotnet restore # --locked-mode
+      # locally use dotnet restore --force-evaluate -r linux-x64 to make sure it uses the same RID as CI
+      run: dotnet restore --locked-mode
 
     - name: Test
       run: dotnet test --no-restore -c $BUILD_CONFIG /p:AltCover=true /p:AltCoverCobertura=coverage.xml /p:AltCoverAssemblyFilter='(.*)(?<!mntnr.toolkit)$'
@@ -44,4 +44,4 @@ jobs:
       
     - name: Publish
       if: startsWith(github.ref, 'refs/tags/')
-      run: nuget push -s https://api.nuget.org/v3/index.json -ApiKey ${{secrets.NUGET_API_KEY}} *.nuget
+      run: nuget push -Source https://api.nuget.org/v3/index.json -ApiKey ${{secrets.NUGET_API_KEY}} *.nuget
