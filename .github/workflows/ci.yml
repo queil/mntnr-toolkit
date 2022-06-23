@@ -28,7 +28,7 @@ jobs:
         dotnet-version: 6.0.x
 
     - name: Restore
-      run: dotnet restore --locked-mode -c $BUILD_CONFIG
+      run: dotnet restore --locked-mode
 
     - name: Test
       run: dotnet test --no-restore -c $BUILD_CONFIG /p:AltCover=true /p:AltCoverCobertura=coverage.xml /p:AltCoverAssemblyFilter="(.*)(?<!Mntnr.Toolkit)$"
