@@ -27,8 +27,7 @@ jobs:
         dotnet-version: 6.0.x
 
     - name: Restore
-      # locally use dotnet restore --force-evaluate -r linux-x64 to make sure it uses the same RID as CI
-      run: dotnet restore --locked-mode
+      run: dotnet restore # --locked-mode # disabled due to https://github.com/NuGet/Home/issues/9195
 
     - name: Test
       run: dotnet test --no-restore -c $BUILD_CONFIG /p:AltCover=true /p:AltCoverCobertura=coverage.xml /p:AltCoverAssemblyFilter='(.*)(?<!mntnr.toolkit)$'
