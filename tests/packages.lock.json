@@ -2,11 +2,11 @@
   "version": 1,
   "dependencies": {
     "net6.0": {
-      "coverlet.collector": {
+      "altcover": {
         "type": "Direct",
-        "requested": "[3.*, )",
-        "resolved": "3.1.2",
-        "contentHash": "wuLDIDKD5XMt0A7lE31JPenT7QQwZPFkP5rRpdJeblyXZ9MGLI8rYjvm5fvAKln+2/X+4IxxQDxBtwdrqKNLZw=="
+        "requested": "[8.2.837, )",
+        "resolved": "8.2.837",
+        "contentHash": "OskZIH9gKKGFYVkhyYbbP0j5BkToww0waUvmnmEevjtLX0PLY6HQM0H97eplY4m+0rdrrKVxVA1Ouaj8PNzvzw=="
       },
       "Expecto": {
         "type": "Direct",

@@ -32,7 +32,7 @@ jobs:
       run: dotnet restore # --locked-mode
 
     - name: Test
-      run: dotnet test --no-restore -c $BUILD_CONFIG /p:AltCover=true /p:AltCoverCobertura=coverage.xml /p:AltCoverAssemblyFilter="(.*)(?<!Mntnr.Toolkit)$"
+      run: dotnet test --no-restore -c $BUILD_CONFIG /p:AltCover=true /p:AltCoverCobertura=coverage.xml /p:AltCoverAssemblyFilter='(.*)(?<!mntnr.toolkit)$'
 
     - name: Code Coverage Summary Report
       uses: irongut/CodeCoverageSummary@v1.2.0
