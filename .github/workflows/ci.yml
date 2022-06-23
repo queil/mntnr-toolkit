@@ -37,7 +37,7 @@ jobs:
     - name: Code Coverage Summary Report
       uses: irongut/CodeCoverageSummary@v1.2.0
       with:
-        filename: tests/unit/coverage.xml
+        filename: tests/coverage.xml
 
     - name: Pack
       run: dotnet pack --no-restore -c $BUILD_CONFIG /p:Version=$PKGVER
