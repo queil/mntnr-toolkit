@@ -615,7 +615,7 @@
         "type": "Project",
         "dependencies": {
           "FSharp.Core": "6.0.0",
-          "Fake.Core.Process": "5.22.0"
+          "Fake.Core.Process": "[5.0.0, 6.0.0)"
         }
       }
     }
