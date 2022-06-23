@@ -187,6 +187,8 @@ module Toolkit =
 
          "Unexpected remote url" |> Expect.equal ( Git.relativePath "git@my.git.repo:queil/mntnr-toolkit.git") "queil/mntnr-toolkit"
          "Unexpected remote url" |> Expect.equal ( Git.relativePath "https://git-token:fake-token-value@my.git.repo/queil/mntnr-toolkit.git") "queil/mntnr-toolkit"
+         "Unexpected remote url" |> Expect.equal ( Git.relativePath "https://github.com/queil/mntnr-toolkit") "queil/mntnr-toolkit"
+
        }
 
       test "Should match remote path" {

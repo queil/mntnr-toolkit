@@ -44,7 +44,8 @@ module Toolkit =
 
     let relativePath remoteUrl =
       match remoteUrl with
-      | ParseRegex "https://(.+)@([^\/]+)\/(.+).git" [_; _; path] -> path
+      | ParseRegex "https:\/\/(.+)@([^\/]+)\/(.+).git" [_; _; path] -> path
+      | ParseRegex "https:\/\/([^\/]+)\/(.+)" [_;path] -> path 
       | ParseRegex "git@(.+):(.+).git" [_; path] -> path
       | _ -> failwith $"Cannot extract Git path from remote URL: {remoteUrl}"
 
