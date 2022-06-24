@@ -10,12 +10,6 @@
   <ItemGroup>
     <Compile Include="Toolkit.Tests.fs" />
     <Compile Include="Main.fs" />
-    <Content Include="test-files/csproj-tfm/test.csproj">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="test-files/csproj/test.csproj">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
 
   <ItemGroup>
