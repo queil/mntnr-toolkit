@@ -15,7 +15,7 @@ module Toolkit =
         File.create fileName ["Content"]
         $"File '{fileName}' should be created" |> Expect.equal (File.Exists fileName) true
         let lines = File.readLines fileName
-        $"File content should be equal to 'Content'" |> Expect.equal (lines |> Seq.toList) ["Content"]
+        "File content should be equal to 'Content'" |> Expect.equal (lines |> Seq.toList) ["Content"]
       }
 
       test "Should delete file" {
@@ -59,7 +59,7 @@ module Toolkit =
           """</PropertyGroup>"""
           """</Project>"""
         ]
-        Xml.append "/Project/PropertyGroup[1]" "<RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>" fileName
+        Xml.appendNode "/Project/PropertyGroup[1]" "<RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>" fileName
         $"File should have correct content" |> Expect.equal (fileName |> File.readLines |> Seq.toList) [
           """<Project Sdk="Microsoft.NET.Sdk.Web">"""
           """  <PropertyGroup>"""
@@ -68,18 +68,40 @@ module Toolkit =
           """</Project>"""
         ]
       }
-
+      
+      test "Should remove csproj property" {
+        let projDir = "test-files/csproj-remove-prop"
+        mkdir projDir
+        let projFile = $"{projDir}/test.csproj"
+        File.create projFile [
+          """<Project Sdk="Microsoft.NET.Sdk.Web">"""
+          """<PropertyGroup>"""
+          """  <NodeToRemove>this will be gone</NodeToRemove>"""
+          """</PropertyGroup>"""
+          """</Project>"""
+        ]
+        projDir |> SdkProj.removeProperty "/Project/PropertyGroup[1]/NodeToRemove"
+        "File should have correct content" |> Expect.equal (projFile |> File.readLines |> Seq.toList) [
+          """<Project Sdk="Microsoft.NET.Sdk.Web">"""
+          """  <PropertyGroup>"""
+          """  </PropertyGroup>"""
+          """</Project>"""
+        ]
+      }
+      
       test "Should add csproj property" {
-        let fileDir = "test-files/csproj"
-        let fileName = $"{fileDir}/test.csproj"
-        File.create fileName [
+        let projDir = "test-files/csproj"
+        mkdir projDir
+        let projFile = $"{projDir}/test.csproj"
+
+        File.create projFile [
           """<Project Sdk="Microsoft.NET.Sdk.Web">"""
           """<PropertyGroup>"""
           """</PropertyGroup>"""
           """</Project>"""
         ]
-        Csproj.addProperty "<RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>" fileDir
-        $"File should have correct content" |> Expect.equal (fileName |> File.readLines |> Seq.toList) [
+        projDir |> SdkProj.addProperty "<RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>"
+        $"File should have correct content" |> Expect.equal (projFile |> File.readLines |> Seq.toList) [
           """<Project Sdk="Microsoft.NET.Sdk.Web">"""
           """  <PropertyGroup>"""
           """    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>"""
@@ -93,7 +115,7 @@ module Toolkit =
 
        ["pear"; "why not"] |> File.streamTo fileName (function | ParseRegex "p(ear)" [ear] -> $"b{ear}" | s -> s)
 
-       $"File should have correct content" |> Expect.equal (fileName |> File.readLines |> Seq.toList) [
+       "File should have correct content" |> Expect.equal (fileName |> File.readLines |> Seq.toList) [
           "bear"
           "why not"
         ]
@@ -104,7 +126,7 @@ module Toolkit =
        ["pear"; "why not"] |> File.create fileName
        File.stream fileName (function | ParseRegex "p(ear)" [ear] -> $"b{ear}" | s -> s)
        
-       $"File should have correct content" |> Expect.equal (fileName |> File.readLines |> Seq.toList) [
+       "File should have correct content" |> Expect.equal (fileName |> File.readLines |> Seq.toList) [
           "bear"
           "why not"
         ]
@@ -119,7 +141,7 @@ module Toolkit =
               "static"
             ])
 
-        $"File should have correct content" |> Expect.equal (fileName |> File.readLines |> Seq.toList) [
+        "File should have correct content" |> Expect.equal (fileName |> File.readLines |> Seq.toList) [
           "pear blue"
           "bear blue"
           "static"
@@ -133,7 +155,7 @@ module Toolkit =
         File.insertLineAfter "pear blue" "static" |>
           File.stream fileName 
 
-        $"File should have correct content" |> Expect.equal (fileName |> File.readLines |> Seq.toList) [
+        "File should have correct content" |> Expect.equal (fileName |> File.readLines |> Seq.toList) [
           "pear blue"
           "static"
           "why not"
@@ -141,7 +163,6 @@ module Toolkit =
           "static"
         ]
       }
-
 
       test "Should replace XML node contents" {
         let fileName = "nodeContentsTest.csproj.tmp"
@@ -152,8 +173,8 @@ module Toolkit =
           """</PropertyGroup>"""
           """</Project>"""
         ]
-        Xml.replace "/Project/PropertyGroup/TargetFramework" "net5.0" fileName
-        $"File should have updated content" |> Expect.equal (fileName |> File.readLines |> Seq.toList) [
+        Xml.replaceNodeText "/Project/PropertyGroup/TargetFramework" "net5.0" fileName
+        "File should have updated content" |> Expect.equal (fileName |> File.readLines |> Seq.toList) [
          """<Project Sdk="Microsoft.NET.Sdk.Web">"""
          """  <PropertyGroup>"""
          """    <TargetFramework>net5.0</TargetFramework>"""
@@ -163,17 +184,18 @@ module Toolkit =
       }
 
       test "Should change csproj target framework property" {
-        let fileDir = "test-files/csproj-tfm"
-        let fileName = $"{fileDir}/test.csproj"
-        File.create fileName [
+        let projDir = "test-files/csproj-tfm"
+        mkdir projDir
+        let projName = $"{projDir}/test.csproj"
+        File.create projName [
           """<Project Sdk="Microsoft.NET.Sdk.Web">"""
           """<PropertyGroup>"""
           """<TargetFramework>netcoreapp3.1</TargetFramework>"""
           """</PropertyGroup>"""
           """</Project>"""
         ]
-        Csproj.changeTfm "net5.0" fileDir
-        $"File should have updated content" |> Expect.equal (fileName |> File.readLines |> Seq.toList) [
+        SdkProj.changeTfm "net5.0" projDir
+        "File should have updated content" |> Expect.equal (projName |> File.readLines |> Seq.toList) [
             """<Project Sdk="Microsoft.NET.Sdk.Web">"""
             """  <PropertyGroup>"""
             """    <TargetFramework>net5.0</TargetFramework>"""
@@ -181,7 +203,6 @@ module Toolkit =
             """</Project>"""
            ]
       }
-
 
       test "Should get git remote url" {
 
