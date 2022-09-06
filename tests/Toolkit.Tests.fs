@@ -6,6 +6,13 @@ open Expecto
 
 module Toolkit =
 
+  let private testFinalEol file =
+    use stream = File.Open(file, FileMode.Open, FileAccess.ReadWrite)
+    stream.Seek(-1, SeekOrigin.End) |> ignore
+    let byte = stream.ReadByte()
+    byte = 10
+
+  
   [<Tests>]
   let tests =
     testList "Toolkit" [
@@ -67,6 +74,7 @@ module Toolkit =
           """  </PropertyGroup>"""
           """</Project>"""
         ]
+        "File should have a final EOL" |> Expect.isTrue (testFinalEol fileName)
       }
       
       test "Should remove csproj property" {
@@ -87,6 +95,7 @@ module Toolkit =
           """  </PropertyGroup>"""
           """</Project>"""
         ]
+        "File should have a final EOL" |> Expect.isTrue (testFinalEol projFile)
       }
       
       test "Should add csproj property" {
@@ -108,6 +117,7 @@ module Toolkit =
           """  </PropertyGroup>"""
           """</Project>"""
         ]
+        "File should have a final EOL" |> Expect.isTrue (testFinalEol projFile)
       }
 
       test "Should stream to file" {
@@ -181,6 +191,7 @@ module Toolkit =
          """  </PropertyGroup>"""
          """</Project>"""
         ]
+        "File should have a final EOL" |> Expect.isTrue (testFinalEol fileName)
       }
 
       test "Should change csproj target framework property" {
@@ -202,6 +213,7 @@ module Toolkit =
             """  </PropertyGroup>"""
             """</Project>"""
            ]
+        "File should have a final EOL" |> Expect.isTrue (testFinalEol projName)
       }
 
       test "Should get git remote url" {

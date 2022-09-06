@@ -613,8 +613,8 @@
       "mntnr.toolkit": {
         "type": "Project",
         "dependencies": {
-          "FSharp.Core": "6.0.0",
-          "Fake.Core.Process": "5.0.0"
+          "FSharp.Core": "[6.*, )",
+          "Fake.Core.Process": "[5.*, )"
         }
       }
     }
