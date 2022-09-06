@@ -13,10 +13,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="AltCover" Version="8.2.837" />
+    <PackageReference Include="AltCover" Version="8.*" />
     <PackageReference Include="Expecto" Version="9.*" />
     <PackageReference Include="YoloDev.Expecto.TestSdk" Version="0.*" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.*" />
+    <PackageReference Remove="FSharp.Core" />
   </ItemGroup>
 
   <ItemGroup>
