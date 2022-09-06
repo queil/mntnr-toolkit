@@ -14,11 +14,11 @@ module Xml =
     refNode.AppendChild nodeToInsert |> ignore
     doc.Save(xmlFilePath)
 
-  let replaceNodeText xPath content (xmlFilePath:string) =
+  let replaceNodeText xPath mapContent (xmlFilePath:string) =
     let doc = XmlDocument()
     doc.Load(xmlFilePath)
     let node = doc.SelectSingleNode(xPath)
-    node.InnerText <- content
+    node.InnerText <- mapContent node.InnerText
     doc.Save(xmlFilePath)
 
   let removeNode xPath (xmlFilePath:string) =

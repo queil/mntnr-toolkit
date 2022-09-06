@@ -173,7 +173,7 @@ module Toolkit =
           """</PropertyGroup>"""
           """</Project>"""
         ]
-        Xml.replaceNodeText "/Project/PropertyGroup/TargetFramework" "net5.0" fileName
+        Xml.replaceNodeText "/Project/PropertyGroup/TargetFramework" (fun _ -> "net5.0") fileName
         "File should have updated content" |> Expect.equal (fileName |> File.readLines |> Seq.toList) [
          """<Project Sdk="Microsoft.NET.Sdk.Web">"""
          """  <PropertyGroup>"""
@@ -194,7 +194,7 @@ module Toolkit =
           """</PropertyGroup>"""
           """</Project>"""
         ]
-        SdkProj.changeTfm "net5.0" projDir
+        SdkProj.changeTfm (fun _ -> "net5.0") projDir
         "File should have updated content" |> Expect.equal (projName |> File.readLines |> Seq.toList) [
             """<Project Sdk="Microsoft.NET.Sdk.Web">"""
             """  <PropertyGroup>"""
@@ -209,7 +209,6 @@ module Toolkit =
          "Unexpected remote url" |> Expect.equal ( Git.relativePath "git@my.git.repo:queil/mntnr-toolkit.git") "queil/mntnr-toolkit"
          "Unexpected remote url" |> Expect.equal ( Git.relativePath "https://git-token:fake-token-value@my.git.repo/queil/mntnr-toolkit.git") "queil/mntnr-toolkit"
          "Unexpected remote url" |> Expect.equal ( Git.relativePath "https://github.com/queil/mntnr-toolkit") "queil/mntnr-toolkit"
-
        }
 
       test "Should match remote path" {
