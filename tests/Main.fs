@@ -1,6 +1,7 @@
-﻿module tests
-open Expecto
+module tests
 
-[<EntryPoint>]
-let main argv =
-  Tests.runTestsInAssembly defaultConfig argv
+open Expecto
+open System
+
+Tests.runTestsInAssemblyWithCLIArgs [] (Environment.GetCommandLineArgs())
+|> ignore
