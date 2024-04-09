@@ -29,4 +29,8 @@
     <PackageReference Update="FSharp.Core" Version="8.0.100" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="..\..\README.md" Pack="true" PackagePath="\"/>
+  </ItemGroup>
+
 </Project>
