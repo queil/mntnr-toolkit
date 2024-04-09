@@ -23,6 +23,16 @@
         "resolved": "8.0.100",
         "contentHash": "ZOVZ/o+jI3ormTZOa28Wh0tSRoyle1f7lKFcUN61sPiXI7eDZu8eSveFybgTeyIEyW0ujjp31cp7GOglDgsNEg=="
       },
+      "Microsoft.SourceLink.GitLab": {
+        "type": "Direct",
+        "requested": "[8.0.0, )",
+        "resolved": "8.0.0",
+        "contentHash": "Ro0MfWhG3AlS5qn3sIk8tw2P1XcrwvKKMKqqWz5BlcU35C4Xi/MKRwp+vmfwJ/+U3mCVYM65vUiUphVGezGflw==",
+        "dependencies": {
+          "Microsoft.Build.Tasks.Git": "8.0.0",
+          "Microsoft.SourceLink.Common": "8.0.0"
+        }
+      },
       "Fake.Core.Context": {
         "type": "Transitive",
         "resolved": "6.0.0",
@@ -75,6 +85,16 @@
           "Fake.Core.String": "6.0.0",
           "Fake.Core.Trace": "6.0.0"
         }
+      },
+      "Microsoft.Build.Tasks.Git": {
+        "type": "Transitive",
+        "resolved": "8.0.0",
+        "contentHash": "bZKfSIKJRXLTuSzLudMFte/8CempWjVamNUR5eHJizsy+iuOuO/k2gnh7W0dHJmYY0tBf+gUErfluCv5mySAOQ=="
+      },
+      "Microsoft.SourceLink.Common": {
+        "type": "Transitive",
+        "resolved": "8.0.0",
+        "contentHash": "dk9JPxTCIevS75HyEQ0E4OVAFhB2N+V9ShCXf8Q6FkUQZDkgLI12y679Nym1YqsiSysuQskT7Z+6nUf3yab6Vw=="
       },
       "System.Collections.Immutable": {
         "type": "Transitive",
