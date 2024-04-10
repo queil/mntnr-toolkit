@@ -27,18 +27,20 @@ module Xml =
         doc.Load(xmlFilePath)
         let refNode = doc.SelectSingleNode(parentXPath)
 
-        let (preWhitespace, postWhitespace) = 
-          let maybeWhitespace = refNode.LastChild :?> XmlWhitespace
-          if isNull maybeWhitespace then
-            let spaces = (refNode.PreviousSibling :?> XmlWhitespace).InnerText.Trim('\r','\n')
-            ("\n" + spaces + spaces, "\n" + spaces)
-          else
-            let spaces = maybeWhitespace.InnerText.TrimStart('\r','\n')
-            if spaces = "" then
-              let x = (refNode.LastChild.PreviousSibling.LastChild :?> XmlWhitespace).InnerText
-              (x.TrimStart('\r','\n'), "\n" + x.Trim(' '))
+        let (preWhitespace, postWhitespace) =
+            let maybeWhitespace = refNode.LastChild :?> XmlWhitespace
+
+            if isNull maybeWhitespace then
+                let spaces = (refNode.PreviousSibling :?> XmlWhitespace).InnerText.Trim('\r', '\n')
+                ("\n" + spaces + spaces, "\n" + spaces)
             else
-              (spaces, "\n" + spaces)
+                let spaces = maybeWhitespace.InnerText.TrimStart('\r', '\n')
+
+                if spaces = "" then
+                    let x = (refNode.LastChild.PreviousSibling.LastChild :?> XmlWhitespace).InnerText
+                    (x.TrimStart('\r', '\n'), "\n" + x.Trim(' '))
+                else
+                    (spaces, "\n" + spaces)
 
         let importDoc = XmlDocument()
         importDoc.LoadXml(nodeXml)
