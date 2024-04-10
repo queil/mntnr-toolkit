@@ -55,7 +55,7 @@ module Toolkit =
                         "RUN ls -la"
                         """ENTRYPOINT ["/app/test-9939-3232"]""" ]
 
-                  File.replace
+                  File.replaceContent
                       fileName
                       (fun lines ->
                           {| projName =
@@ -80,8 +80,10 @@ module Toolkit =
                   File.create
                       fileName
                       [ """<Project Sdk="Microsoft.NET.Sdk.Web">"""
-                        """<PropertyGroup>"""
-                        """</PropertyGroup>"""
+                        ""
+                        """  <PropertyGroup>"""
+                        """  </PropertyGroup>"""
+                        ""
                         """</Project>""" ]
 
                   Xml.appendNode
@@ -93,35 +95,41 @@ module Toolkit =
                   |> Expect.equal
                       (fileName |> File.readLines |> Seq.toList)
                       [ """<Project Sdk="Microsoft.NET.Sdk.Web">"""
+                        ""
                         """  <PropertyGroup>"""
                         """    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>"""
                         """  </PropertyGroup>"""
+                        ""
                         """</Project>""" ]
 
                   "File should have a final EOL" |> Expect.isTrue (testFinalEol fileName)
               }
 
               test "Should remove csproj property" {
-                  let projDir = "test-files/csproj-remove-prop"
+                  let projDir = $"test-files/csproj-remove-prop"
                   mkdir projDir
                   let projFile = $"{projDir}/test.csproj"
 
                   File.create
                       projFile
                       [ """<Project Sdk="Microsoft.NET.Sdk.Web">"""
-                        """<PropertyGroup>"""
-                        """  <NodeToRemove>this will be gone</NodeToRemove>"""
-                        """</PropertyGroup>"""
+                        ""
+                        """  <PropertyGroup>"""
+                        """    <NodeToRemove>this will be gone</NodeToRemove>"""
+                        """  </PropertyGroup>"""
+                        ""
                         """</Project>""" ]
 
-                  projDir |> SdkProj.removeProperty "/Project/PropertyGroup[1]/NodeToRemove"
+                  projDir |> SdkProj.findProjFile |> SdkProj.removeProperty "/Project/PropertyGroup[1]/NodeToRemove" |> ignore
 
                   "File should have correct content"
                   |> Expect.equal
                       (projFile |> File.readLines |> Seq.toList)
                       [ """<Project Sdk="Microsoft.NET.Sdk.Web">"""
+                        ""
                         """  <PropertyGroup>"""
                         """  </PropertyGroup>"""
+                        ""
                         """</Project>""" ]
 
                   "File should have a final EOL" |> Expect.isTrue (testFinalEol projFile)
@@ -135,20 +143,25 @@ module Toolkit =
                   File.create
                       projFile
                       [ """<Project Sdk="Microsoft.NET.Sdk.Web">"""
-                        """<PropertyGroup>"""
-                        """</PropertyGroup>"""
+                        ""
+                        """  <PropertyGroup>"""
+                        """  </PropertyGroup>"""
+                        ""
                         """</Project>""" ]
 
                   projDir
+                  |> SdkProj.findProjFile
                   |> SdkProj.addProperty "<RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>"
 
                   $"File should have correct content"
                   |> Expect.equal
                       (projFile |> File.readLines |> Seq.toList)
                       [ """<Project Sdk="Microsoft.NET.Sdk.Web">"""
+                        ""
                         """  <PropertyGroup>"""
                         """    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>"""
                         """  </PropertyGroup>"""
+                        ""
                         """</Project>""" ]
 
                   "File should have a final EOL" |> Expect.isTrue (testFinalEol projFile)
@@ -208,20 +221,24 @@ module Toolkit =
                   File.create
                       fileName
                       [ """<Project Sdk="Microsoft.NET.Sdk.Web">"""
-                        """<PropertyGroup>"""
-                        """<TargetFramework>netcoreapp3.1</TargetFramework>"""
-                        """</PropertyGroup>"""
+                        ""
+                        """  <PropertyGroup>"""
+                        """    <TargetFramework>net7.0</TargetFramework>"""
+                        """  </PropertyGroup>"""
+                        ""
                         """</Project>""" ]
 
-                  Xml.replaceNodeText "/Project/PropertyGroup/TargetFramework" (fun _ -> "net5.0") fileName
+                  Xml.replaceNodeText "/Project/PropertyGroup/TargetFramework" (fun _ -> "net8.0") fileName
 
                   "File should have updated content"
                   |> Expect.equal
                       (fileName |> File.readLines |> Seq.toList)
                       [ """<Project Sdk="Microsoft.NET.Sdk.Web">"""
+                        ""
                         """  <PropertyGroup>"""
-                        """    <TargetFramework>net5.0</TargetFramework>"""
+                        """    <TargetFramework>net8.0</TargetFramework>"""
                         """  </PropertyGroup>"""
+                        ""
                         """</Project>""" ]
 
                   "File should have a final EOL" |> Expect.isTrue (testFinalEol fileName)
@@ -235,20 +252,26 @@ module Toolkit =
                   File.create
                       projName
                       [ """<Project Sdk="Microsoft.NET.Sdk.Web">"""
-                        """<PropertyGroup>"""
-                        """<TargetFramework>netcoreapp3.1</TargetFramework>"""
-                        """</PropertyGroup>"""
+                        ""
+                        """  <PropertyGroup>"""
+                        """    <TargetFramework>netcoreapp3.1</TargetFramework>"""
+                        """  </PropertyGroup>"""
+                        ""
                         """</Project>""" ]
 
-                  SdkProj.changeTfm (fun _ -> "net5.0") projDir
+                  projDir
+                  |> SdkProj.findProjFile
+                  |> SdkProj.changeTfm (fun _ -> "net8.0") |> ignore
 
                   "File should have updated content"
                   |> Expect.equal
                       (projName |> File.readLines |> Seq.toList)
                       [ """<Project Sdk="Microsoft.NET.Sdk.Web">"""
+                        ""
                         """  <PropertyGroup>"""
-                        """    <TargetFramework>net5.0</TargetFramework>"""
+                        """    <TargetFramework>net8.0</TargetFramework>"""
                         """  </PropertyGroup>"""
+                        ""
                         """</Project>""" ]
 
                   "File should have a final EOL" |> Expect.isTrue (testFinalEol projName)
