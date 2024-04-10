@@ -60,7 +60,17 @@ module Xml =
 
     let removeNode xPath (xmlFilePath: string) =
         let doc = XmlDocument()
+        doc.PreserveWhitespace <- true
         doc.Load(xmlFilePath)
         let node = doc.SelectSingleNode(xPath)
-        node.ParentNode.RemoveChild(node) |> ignore
-        doc.SaveWithFinalEol(xmlFilePath)
+
+        if isNull node then
+            ()
+        else
+            let maybe_whitespace = node.PreviousSibling :?> XmlWhitespace
+
+            if not <| isNull maybe_whitespace then
+                node.ParentNode.RemoveChild(maybe_whitespace) |> ignore
+
+            node.ParentNode.RemoveChild(node) |> ignore
+            doc.SaveWithFinalEol(xmlFilePath)

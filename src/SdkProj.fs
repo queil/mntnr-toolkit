@@ -22,8 +22,7 @@ module SdkProj =
         projFilePath
 
     let appendItem itemXml (itemGroupIndex: int) projFilePath =
-        projFilePath
-        |> Xml.appendNode $"/Project/ItemGroup[{itemGroupIndex}]" itemXml
+        projFilePath |> Xml.appendNode $"/Project/ItemGroup[{itemGroupIndex}]" itemXml
         projFilePath
 
     let removeProperty xpath projFilePath =
