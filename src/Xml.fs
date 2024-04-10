@@ -37,8 +37,14 @@ module Xml =
                 let spaces = maybeWhitespace.InnerText.TrimStart('\r', '\n')
 
                 if spaces = "" then
-                    let x = (refNode.LastChild.PreviousSibling.LastChild :?> XmlWhitespace).InnerText
-                    (x.TrimStart('\r', '\n'), "\n" + x.Trim(' '))
+                    let maybeFutureSiblingIndent = 
+                        match refNode.LastChild with
+                        | null -> ""
+                        | n -> match n.PreviousSibling with
+                               | null -> ""
+                               | n -> (n.LastChild :?> XmlWhitespace).InnerText
+                    let indent = maybeFutureSiblingIndent
+                    (indent.TrimStart('\r', '\n'), "\n" + indent.Trim(' '))
                 else
                     (spaces, "\n" + spaces)
 
