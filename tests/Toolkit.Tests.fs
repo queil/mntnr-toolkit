@@ -120,7 +120,10 @@ module Toolkit =
                         ""
                         """</Project>""" ]
 
-                  projDir |> SdkProj.findProjFile |> SdkProj.removeProperty "/Project/PropertyGroup[1]/NodeToRemove" |> ignore
+                  projDir
+                  |> SdkProj.findProjFile
+                  |> SdkProj.removeProperty "/Project/PropertyGroup[1]/NodeToRemove"
+                  |> ignore
 
                   "File should have correct content"
                   |> Expect.equal
@@ -261,7 +264,8 @@ module Toolkit =
 
                   projDir
                   |> SdkProj.findProjFile
-                  |> SdkProj.changeTfm (fun _ -> "net8.0") |> ignore
+                  |> SdkProj.changeTfm (fun _ -> "net8.0")
+                  |> ignore
 
                   "File should have updated content"
                   |> Expect.equal
