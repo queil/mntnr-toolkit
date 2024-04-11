@@ -32,3 +32,7 @@ module SdkProj =
     let changeTfm tfm projFilePath =
         projFilePath |> Xml.replaceNodeText "/Project/PropertyGroup/TargetFramework" tfm
         projFilePath
+
+    let setNugetVer (nuget:string) (newVer:string -> string) projFilePath =
+        projFilePath |> Xml.replaceNodeText $"/Project/ItemGroup/PackageReference[@Include='{nuget}']/@Version" newVer
+        projFilePath
