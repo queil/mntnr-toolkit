@@ -18,7 +18,7 @@ module File =
 
     /// Appends lines to a file
     let appendLines filePath lines =
-        File.AppendAllLines(filePath, "\n" :: lines |> Seq.toArray, utf8NoBom)
+        File.AppendAllLines(filePath, lines |> Seq.toArray, utf8NoBom)
 
     /// Reads all lines from a file
     let readLines (path: string) = File.ReadAllLines path |> Seq.ofArray
