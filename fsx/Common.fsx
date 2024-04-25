@@ -1,5 +1,9 @@
 namespace Mntnr.Toolkit
 
+#r "paket:
+      nuget Fake.Core.Process >= 6.0.0
+"
+
 open System.IO
 open System.Text.RegularExpressions
 open Fake.Core

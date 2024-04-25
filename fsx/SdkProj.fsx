@@ -1,5 +1,7 @@
 namespace Mntnr.Toolkit
 
+#load "Xml.fsx"
+
 open System.IO
 
 [<RequireQualifiedAccess>]

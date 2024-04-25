@@ -1,5 +1,7 @@
 namespace Mntnr.Toolkit
 
+#load "Common.fsx"
+
 [<RequireQualifiedAccess>]
 module Git =
     let remoteUrl () = shValue "git remote get-url origin"

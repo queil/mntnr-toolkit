@@ -6,9 +6,16 @@
     <GenerateProgramFile>false</GenerateProgramFile>
     <RootNamespace>mntnr.toolkit.tests</RootNamespace>
     <RestoreWithLockFile>false</RestoreWithLockFile>
+    <OtherFlags>--compilertool:/home/queil/.fsharp/fsx-extensions/.fsch</OtherFlags>
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="../fsx/Common.fsx" />
+    <Compile Include="../fsx/File.fsx" />
+    <Compile Include="../fsx/Git.fsx" />
+    <Compile Include="../fsx/Dockerfile.fsx" />
+    <Compile Include="../fsx/Xml.fsx" />
+    <Compile Include="../fsx/SdkProj.fsx" />
     <Compile Include="Toolkit.Tests.fs" />
     <Compile Include="Main.fs" />
   </ItemGroup>
@@ -16,12 +23,10 @@
   <ItemGroup>
     <PackageReference Include="AltCover" Version="8.*" />
     <PackageReference Include="Expecto" Version="10.*" />
+    <PackageReference Include="Fake.Core.Process" Version="6.0.0" />
     <PackageReference Include="YoloDev.Expecto.TestSdk" Version="0.*" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.*" />
     <PackageReference Remove="FSharp.Core" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\src\mntnr.toolkit.fsproj" />
-  </ItemGroup>
 </Project>

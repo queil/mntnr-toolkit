@@ -1,7 +1,10 @@
 namespace Mntnr.Toolkit
 
+#load "File.fsx"
+
 [<RequireQualifiedAccess>]
 module Dockerfile =
+
     /// Sets a new tag for the given Dockerfile's image
     let setImage imageName newName newTag dockerfilePath =
         File.stream dockerfilePath (function

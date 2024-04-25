@@ -354,3 +354,5 @@ MigrationBackup/
 coverage.xml
 
 **/test-files
+**/.fsch
+**/.fsy
