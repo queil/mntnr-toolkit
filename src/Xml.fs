@@ -13,7 +13,6 @@ module Xml =
 
         if stream.ReadByte() <> 10 then
             stream.WriteByte(10uy)
-
         stream.Flush()
 
     type XmlDocument with
@@ -53,10 +52,12 @@ module Xml =
         let importDoc = XmlDocument()
         importDoc.LoadXml(nodeXml)
         let nodeToInsert = doc.ImportNode(importDoc.DocumentElement, true)
-        refNode.AppendChild(doc.CreateWhitespace(preWhitespace)) |> ignore
-        refNode.AppendChild nodeToInsert |> ignore
-        refNode.AppendChild(doc.CreateWhitespace(postWhitespace)) |> ignore
-        doc.SaveWithFinalEol(xmlFilePath)
+        if doc.SelectSingleNode($"{parentXPath}/{nodeToInsert.Name}") |> isNull then
+          refNode.AppendChild(doc.CreateWhitespace(preWhitespace)) |> ignore
+          refNode.AppendChild nodeToInsert |> ignore
+          refNode.AppendChild(doc.CreateWhitespace(postWhitespace)) |> ignore
+          doc.SaveWithFinalEol(xmlFilePath)
+        else ()
 
     let replaceNodeText xPath mapContent (xmlFilePath: string) =
         let doc = XmlDocument()

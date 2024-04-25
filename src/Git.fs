@@ -9,6 +9,7 @@ module Git =
         | ParseRegex "https:\/\/(.+)@([^\/]+)\/(.+).git" [ _; _; path ] -> path
         | ParseRegex "https:\/\/([^\/]+)\/(.+)" [ _; path ] -> path
         | ParseRegex "git@(.+):(.+).git" [ _; path ] -> path
+        | ParseRegex "git@(.+):(.+)" [ _; path ] -> path
         | _ -> failwith $"Cannot extract Git path from remote URL: {remoteUrl}"
 
     let matches pattern (relativePath: string) =

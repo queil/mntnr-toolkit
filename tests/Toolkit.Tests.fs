@@ -105,6 +105,36 @@ module Toolkit =
                   "File should have a final EOL" |> Expect.isTrue (testFinalEol fileName)
               }
 
+              test "Should not append XML node if already exists" {
+                  let fileName = "test68.csproj.tmp"
+
+                  File.create
+                      fileName
+                      [ """<Project Sdk="Microsoft.NET.Sdk.Web">"""
+                        ""
+                        """  <PropertyGroup>"""
+                        """    <IsPackable>true</IsPackable>"""
+                        """  </PropertyGroup>"""
+                        ""
+                        """</Project>""" ]
+
+                  Xml.appendNode "/Project/PropertyGroup[1]" "<IsPackable>true</IsPackable>" fileName
+
+                  $"File should have correct content"
+                  |> Expect.equal
+                      (fileName |> File.readLines |> Seq.toList)
+                      [ """<Project Sdk="Microsoft.NET.Sdk.Web">"""
+                        ""
+                        """  <PropertyGroup>"""
+                        """    <IsPackable>true</IsPackable>"""
+                        """  </PropertyGroup>"""
+                        ""
+                        """</Project>""" ]
+
+                  "File should have a final EOL" |> Expect.isTrue (testFinalEol fileName)
+              }
+
+
               test "Should remove csproj property" {
                   let projDir = $"test-files/csproj-remove-prop"
                   mkdir projDir

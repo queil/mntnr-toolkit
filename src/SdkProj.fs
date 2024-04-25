@@ -33,6 +33,8 @@ module SdkProj =
         projFilePath |> Xml.replaceNodeText "/Project/PropertyGroup/TargetFramework" tfm
         projFilePath
 
-    let setNugetVer (nuget:string) (newVer:string -> string) projFilePath =
-        projFilePath |> Xml.replaceNodeText $"/Project/ItemGroup/PackageReference[@Include='{nuget}']/@Version" newVer
+    let setNugetVer (nuget: string) (newVer: string -> string) projFilePath =
+        projFilePath
+        |> Xml.replaceNodeText $"/Project/ItemGroup/PackageReference[@Include='{nuget}']/@Version" newVer
+
         projFilePath
