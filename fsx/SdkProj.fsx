@@ -40,3 +40,9 @@ module SdkProj =
         |> Xml.replaceNodeText $"/Project/ItemGroup/PackageReference[@Include='{nuget}']/@Version" newVer
 
         projFilePath
+
+    let addNuget (nuget: string) (ver: string) projFilePath =
+        projFilePath
+        |> Xml.appendNode $"/Project/ItemGroup[last()]" $"""<PackageReference Include="{nuget}" Version="{ver}" />"""
+
+        projFilePath
