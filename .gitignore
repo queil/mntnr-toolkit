@@ -356,3 +356,5 @@ coverage.xml
 **/test-files
 **/.fsch
 **/.fsy
+**/*.dll
+**/*.runtimeconfig.json
