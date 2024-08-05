@@ -27,16 +27,19 @@ module File =
     let readFromContentDir (path: string) =
         Path.Combine(Environment.environVar "MNTNR_CLONE_DIR", path) |> readLines
 
-    let private apply map filePath (lines: string seq) = lines |> map |> writeLines filePath
+    let private apply (map: string seq -> string option seq) filePath (lines: string seq) = lines |> map |> Seq.choose id |> writeLines filePath
 
     let private applyInline map filePath =
         filePath |> readLines |> apply map filePath
 
     /// Scans file line-by-line enabling basic replacements
-    let stream filePath map = filePath |> applyInline (Seq.map map)
+    let stream filePath (map:string -> string) = filePath |> applyInline (Seq.map map >> Seq.map Some)
 
     /// Scans file line-by-line enabling basic replacements
-    let streamIndexed filePath map = filePath |> applyInline (Seq.mapi map)
+    let streamOptional filePath (map:string -> string option) = filePath |> applyInline (Seq.map map)
+
+    /// Scans file line-by-line enabling basic replacements
+    let streamIndexed filePath (map: int -> string -> string) = filePath |> applyInline (Seq.mapi map >> Seq.map Some) 
 
     /// Streams lines one-by-one and outputs to a file
     let streamTo destFilePath map lines =
@@ -44,11 +47,11 @@ module File =
 
     /// Replaces the whole file content extracting variables from the original file
     let replaceContent (filePath: string) (bindVars: string seq -> 'a) (makeNewFileContent: 'a -> string list) =
-        filePath |> applyInline (bindVars >> makeNewFileContent)
+        filePath |> applyInline (bindVars >> (makeNewFileContent >> Seq.map Some)) 
 
     /// Extracts arbitrary variables from the input lines and sets the destination file content with the new one constructed with makeResult function
     let replaceTo (destFilePath: string) (bindVars: string seq -> 'a) (makeResult: 'a -> string list) lines =
-        lines |> apply (bindVars >> makeResult) destFilePath
+        lines |> apply (bindVars >> makeResult >> Seq.map Some) destFilePath
 
     /// Insert lines created by linesFunc after each line marked by markerLineRegexp.
     /// linesFunc takes markerLineRegexp captures as parameters so they can be used in
