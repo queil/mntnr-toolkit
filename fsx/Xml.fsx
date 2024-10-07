@@ -20,7 +20,7 @@ module Xml =
             x.Save(path)
             ensureFinalEol path
 
-    let appendNode parentXPath nodeXml (xmlFilePath: string) =
+    let appendNode parentXPath nodeXml unique (xmlFilePath: string) =
         let doc = XmlDocument()
         doc.PreserveWhitespace <- true
         doc.Load(xmlFilePath)
@@ -52,13 +52,14 @@ module Xml =
         let importDoc = XmlDocument()
         importDoc.LoadXml(nodeXml)
         let nodeToInsert = doc.ImportNode(importDoc.DocumentElement, true)
-        if doc.SelectSingleNode($"{parentXPath}/{nodeToInsert.Name}") |> isNull then
+        if unique && doc.SelectSingleNode($"{parentXPath}/{nodeToInsert.Name}") |> isNull |> not
+        then
+          ()
+        else
           refNode.AppendChild(doc.CreateWhitespace(preWhitespace)) |> ignore
           refNode.AppendChild nodeToInsert |> ignore
           refNode.AppendChild(doc.CreateWhitespace(postWhitespace)) |> ignore
-        else ()
-
-        doc.SaveWithFinalEol(xmlFilePath)
+          doc.SaveWithFinalEol(xmlFilePath)
 
     let replaceNodeText xPath mapContent (xmlFilePath: string) =
         let doc = XmlDocument()
@@ -66,7 +67,6 @@ module Xml =
         doc.Load(xmlFilePath)
         let node = doc.SelectSingleNode(xPath)
         node.InnerText <- mapContent node.InnerText
-
         doc.SaveWithFinalEol(xmlFilePath)
 
     let removeNode xPath (xmlFilePath: string) =
@@ -84,5 +84,4 @@ module Xml =
                 node.ParentNode.RemoveChild(maybe_whitespace) |> ignore
 
             node.ParentNode.RemoveChild(node) |> ignore
-
-        doc.SaveWithFinalEol(xmlFilePath)
+            doc.SaveWithFinalEol(xmlFilePath)

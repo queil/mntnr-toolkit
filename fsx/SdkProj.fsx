@@ -17,14 +17,14 @@ module SdkProj =
         |> fun f -> f.FullName
 
     let addProperty propertyXml projFilePath =
-        projFilePath |> Xml.appendNode "/Project/PropertyGroup[1]" propertyXml
+        projFilePath |> Xml.appendNode "/Project/PropertyGroup[1]" propertyXml true
 
     let appendItemGroup projFilePath =
-        projFilePath |> Xml.appendNode "/Project" "<ItemGroup></ItemGroup>"
+        projFilePath |> Xml.appendNode "/Project" "<ItemGroup></ItemGroup>" false
         projFilePath
 
     let appendItem itemXml (itemGroupIndex: int) projFilePath =
-        projFilePath |> Xml.appendNode $"/Project/ItemGroup[{itemGroupIndex}]" itemXml
+        projFilePath |> Xml.appendNode $"/Project/ItemGroup[{itemGroupIndex}]" itemXml false
         projFilePath
 
     let removeProperty xpath projFilePath =
@@ -43,12 +43,12 @@ module SdkProj =
 
     let addNuget (nuget: string) (ver: string) projFilePath =
         projFilePath
-        |> Xml.appendNode $"/Project/ItemGroup[last()]" $"""<PackageReference Include="{nuget}" Version="{ver}" />"""
+        |> Xml.appendNode $"/Project/ItemGroup[last()]" $"""<PackageReference Include="{nuget}" Version="{ver}" />""" false
 
         projFilePath
 
     let addProject (path: string) projFilePath =
         projFilePath
-        |> Xml.appendNode $"/Project/ItemGroup[last()]" $"""<ProjectReference Include="{path}" />"""
+        |> Xml.appendNode $"/Project/ItemGroup[last()]" $"""<ProjectReference Include="{path}" />""" false
 
         projFilePath
