@@ -1,7 +1,7 @@
 namespace Mntnr.Toolkit
 
 #r "paket:
-      nuget Fake.Core.Environment >= 6.0.0
+      nuget Fake.Core.Environment = 6.1.1
 "
 #load "Common.fsx"
 
