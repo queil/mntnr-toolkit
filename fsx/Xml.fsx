@@ -56,8 +56,9 @@ module Xml =
           refNode.AppendChild(doc.CreateWhitespace(preWhitespace)) |> ignore
           refNode.AppendChild nodeToInsert |> ignore
           refNode.AppendChild(doc.CreateWhitespace(postWhitespace)) |> ignore
-          doc.SaveWithFinalEol(xmlFilePath)
         else ()
+
+        doc.SaveWithFinalEol(xmlFilePath)
 
     let replaceNodeText xPath mapContent (xmlFilePath: string) =
         let doc = XmlDocument()
@@ -65,6 +66,7 @@ module Xml =
         doc.Load(xmlFilePath)
         let node = doc.SelectSingleNode(xPath)
         node.InnerText <- mapContent node.InnerText
+
         doc.SaveWithFinalEol(xmlFilePath)
 
     let removeNode xPath (xmlFilePath: string) =
@@ -82,4 +84,5 @@ module Xml =
                 node.ParentNode.RemoveChild(maybe_whitespace) |> ignore
 
             node.ParentNode.RemoveChild(node) |> ignore
-            doc.SaveWithFinalEol(xmlFilePath)
+
+        doc.SaveWithFinalEol(xmlFilePath)
