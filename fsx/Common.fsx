@@ -1,7 +1,7 @@
 namespace Mntnr.Toolkit
 
 #r "paket:
-      nuget Fake.Core.Process >= 6.0.0
+      nuget Fake.Core.Process = 6.1.1
 "
 
 open System.IO
