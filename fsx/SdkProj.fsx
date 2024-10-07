@@ -46,3 +46,9 @@ module SdkProj =
         |> Xml.appendNode $"/Project/ItemGroup[last()]" $"""<PackageReference Include="{nuget}" Version="{ver}" />"""
 
         projFilePath
+
+    let addProject (path: string) projFilePath =
+        projFilePath
+        |> Xml.appendNode $"/Project/ItemGroup[last()]" $"""<ProjectReference Include="{path}" />"""
+
+        projFilePath
